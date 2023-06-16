@@ -1,0 +1,36 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Otel Rezervasyon</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-route.min.js"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Oswald&display=swap" rel="stylesheet">
+
+    <script src="app.js"></script>
+</head>
+
+<body ng-app="myApp">
+    <nav >
+        <a href="#bina">ODA</a>
+        <a href="#!">ANA SAYFA</a>
+        <a href="#bant2">HAKKINDA</a>
+        <a href="#bant2">HIZMETLER</a>
+        <a href="#bant2">ILETISIM</a>
+    </nav>
+    <div ng-view></div>
+    <div class="gorsel">
+        <div class="anasayfa anafiltre"></div>
+    </div>
+    <div id="gor2" class="gorsel"></div>
+    <div id="bant1" class="bant"></div>
+    <div id="gor1" class="gorsel"></div>
+
+</body>
+</html>

@@ -1,0 +1,312 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="StajerDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Bina">
+          <Key>
+            <PropertyRef Name="BinaId" />
+          </Key>
+          <Property Name="BinaId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BinaNumarasi" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Oda_Sayisi" Type="int" />
+        </EntityType>
+        <EntityType Name="Misafirler">
+          <Key>
+            <PropertyRef Name="MisafirId" />
+          </Key>
+          <Property Name="MisafirId" Type="int" Nullable="false" />
+          <Property Name="Adi" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Soyadi" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="TcNo" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="E_Mail" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="OdaId" Type="int" />
+          <Property Name="TelefonNumarasi" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Mesaj" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Cinsiyet" Type="nchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Oda">
+          <Key>
+            <PropertyRef Name="OdaId" />
+          </Key>
+          <Property Name="OdaId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OdaNumarasi" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Yatak_Sayisi" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="BinaId" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'StajerDb.dbo.Ad_Oda' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Ad_Oda">
+          <Key>
+            <PropertyRef Name="Adi" />
+          </Key>
+          <Property Name="Adi" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="OdaNumarasi" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'StajerDb.dbo.KalinanOdaVw' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="KalinanOdaVw">
+          <Key>
+            <PropertyRef Name="OdaNumarasi" />
+            <PropertyRef Name="Adi" />
+          </Key>
+          <Property Name="OdaNumarasi" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Adi" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'StajerDb.dbo.viewolustur' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="viewolustur">
+          <Key>
+            <PropertyRef Name="BinaNumarasi" />
+            <PropertyRef Name="OdaNumarasi" />
+          </Key>
+          <Property Name="BinaNumarasi" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="OdaNumarasi" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Misafirler_Oda">
+          <End Role="Oda" Type="Self.Oda" Multiplicity="0..1" />
+          <End Role="Misafirler" Type="Self.Misafirler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Oda">
+              <PropertyRef Name="OdaId" />
+            </Principal>
+            <Dependent Role="Misafirler">
+              <PropertyRef Name="OdaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Oda_Bina">
+          <End Role="Bina" Type="Self.Bina" Multiplicity="1" />
+          <End Role="Oda" Type="Self.Oda" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Bina">
+              <PropertyRef Name="BinaId" />
+            </Principal>
+            <Dependent Role="Oda">
+              <PropertyRef Name="BinaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="StajerDbModelStoreContainer">
+          <EntitySet Name="Bina" EntityType="Self.Bina" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Misafirler" EntityType="Self.Misafirler" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Oda" EntityType="Self.Oda" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ad_Oda" EntityType="Self.Ad_Oda" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Ad_Oda].[Adi] AS [Adi], 
+    [Ad_Oda].[OdaNumarasi] AS [OdaNumarasi]
+    FROM [dbo].[Ad_Oda] AS [Ad_Oda]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="KalinanOdaVw" EntityType="Self.KalinanOdaVw" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [KalinanOdaVw].[OdaNumarasi] AS [OdaNumarasi], 
+    [KalinanOdaVw].[Adi] AS [Adi]
+    FROM [dbo].[KalinanOdaVw] AS [KalinanOdaVw]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="viewolustur" EntityType="Self.viewolustur" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [viewolustur].[BinaNumarasi] AS [BinaNumarasi], 
+    [viewolustur].[OdaNumarasi] AS [OdaNumarasi]
+    FROM [dbo].[viewolustur] AS [viewolustur]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_Misafirler_Oda" Association="Self.FK_Misafirler_Oda">
+            <End Role="Oda" EntitySet="Oda" />
+            <End Role="Misafirler" EntitySet="Misafirler" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Oda_Bina" Association="Self.FK_Oda_Bina">
+            <End Role="Bina" EntitySet="Bina" />
+            <End Role="Oda" EntitySet="Oda" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="StajerDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="StajerDbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Bina" EntityType="StajerDbModel.Bina" />
+          <EntitySet Name="Misafirler" EntityType="StajerDbModel.Misafirler" />
+          <EntitySet Name="Oda" EntityType="StajerDbModel.Oda" />
+          <EntitySet Name="Ad_Oda" EntityType="StajerDbModel.Ad_Oda" />
+          <EntitySet Name="KalinanOdaVw" EntityType="StajerDbModel.KalinanOdaVw" />
+          <EntitySet Name="viewolustur" EntityType="StajerDbModel.viewolustur" />
+          <AssociationSet Name="FK_Oda_Bina" Association="StajerDbModel.FK_Oda_Bina">
+            <End Role="Bina" EntitySet="Bina" />
+            <End Role="Oda" EntitySet="Oda" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Misafirler_Oda" Association="StajerDbModel.FK_Misafirler_Oda">
+            <End Role="Oda" EntitySet="Oda" />
+            <End Role="Misafirler" EntitySet="Misafirler" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Bina">
+          <Key>
+            <PropertyRef Name="BinaId" />
+          </Key>
+          <Property Name="BinaId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BinaNumarasi" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Oda_Sayisi" Type="Int32" />
+          <NavigationProperty Name="Oda" Relationship="StajerDbModel.FK_Oda_Bina" FromRole="Bina" ToRole="Oda" />
+        </EntityType>
+        <EntityType Name="Misafirler">
+          <Key>
+            <PropertyRef Name="MisafirId" />
+          </Key>
+          <Property Name="MisafirId" Type="Int32" Nullable="false" />
+          <Property Name="Adi" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Soyadi" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TcNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="E_Mail" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="OdaId" Type="Int32" />
+          <Property Name="TelefonNumarasi" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Mesaj" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Cinsiyet" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="Oda" Relationship="StajerDbModel.FK_Misafirler_Oda" FromRole="Misafirler" ToRole="Oda" />
+        </EntityType>
+        <EntityType Name="Oda">
+          <Key>
+            <PropertyRef Name="OdaId" />
+          </Key>
+          <Property Name="OdaId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OdaNumarasi" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Yatak_Sayisi" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="BinaId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Bina" Relationship="StajerDbModel.FK_Oda_Bina" FromRole="Oda" ToRole="Bina" />
+          <NavigationProperty Name="Misafirler" Relationship="StajerDbModel.FK_Misafirler_Oda" FromRole="Oda" ToRole="Misafirler" />
+        </EntityType>
+        <EntityType Name="Ad_Oda">
+          <Key>
+            <PropertyRef Name="Adi" />
+          </Key>
+          <Property Name="Adi" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="OdaNumarasi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="KalinanOdaVw">
+          <Key>
+            <PropertyRef Name="OdaNumarasi" />
+            <PropertyRef Name="Adi" />
+          </Key>
+          <Property Name="OdaNumarasi" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Adi" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="viewolustur">
+          <Key>
+            <PropertyRef Name="BinaNumarasi" />
+            <PropertyRef Name="OdaNumarasi" />
+          </Key>
+          <Property Name="BinaNumarasi" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="OdaNumarasi" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_Oda_Bina">
+          <End Type="StajerDbModel.Bina" Role="Bina" Multiplicity="1" />
+          <End Type="StajerDbModel.Oda" Role="Oda" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Bina">
+              <PropertyRef Name="BinaId" />
+            </Principal>
+            <Dependent Role="Oda">
+              <PropertyRef Name="BinaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Misafirler_Oda">
+          <End Type="StajerDbModel.Oda" Role="Oda" Multiplicity="0..1" />
+          <End Type="StajerDbModel.Misafirler" Role="Misafirler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Oda">
+              <PropertyRef Name="OdaId" />
+            </Principal>
+            <Dependent Role="Misafirler">
+              <PropertyRef Name="OdaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="StajerDbModelStoreContainer" CdmEntityContainer="StajerDbEntities">
+          <EntitySetMapping Name="Bina">
+            <EntityTypeMapping TypeName="StajerDbModel.Bina">
+              <MappingFragment StoreEntitySet="Bina">
+                <ScalarProperty Name="Oda_Sayisi" ColumnName="Oda_Sayisi" />
+                <ScalarProperty Name="BinaNumarasi" ColumnName="BinaNumarasi" />
+                <ScalarProperty Name="BinaId" ColumnName="BinaId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Misafirler">
+            <EntityTypeMapping TypeName="StajerDbModel.Misafirler">
+              <MappingFragment StoreEntitySet="Misafirler">
+                <ScalarProperty Name="Cinsiyet" ColumnName="Cinsiyet" />
+                <ScalarProperty Name="Mesaj" ColumnName="Mesaj" />
+                <ScalarProperty Name="TelefonNumarasi" ColumnName="TelefonNumarasi" />
+                <ScalarProperty Name="OdaId" ColumnName="OdaId" />
+                <ScalarProperty Name="E_Mail" ColumnName="E_Mail" />
+                <ScalarProperty Name="TcNo" ColumnName="TcNo" />
+                <ScalarProperty Name="Soyadi" ColumnName="Soyadi" />
+                <ScalarProperty Name="Adi" ColumnName="Adi" />
+                <ScalarProperty Name="MisafirId" ColumnName="MisafirId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Oda">
+            <EntityTypeMapping TypeName="StajerDbModel.Oda">
+              <MappingFragment StoreEntitySet="Oda">
+                <ScalarProperty Name="BinaId" ColumnName="BinaId" />
+                <ScalarProperty Name="Yatak_Sayisi" ColumnName="Yatak_Sayisi" />
+                <ScalarProperty Name="OdaNumarasi" ColumnName="OdaNumarasi" />
+                <ScalarProperty Name="OdaId" ColumnName="OdaId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ad_Oda">
+            <EntityTypeMapping TypeName="StajerDbModel.Ad_Oda">
+              <MappingFragment StoreEntitySet="Ad_Oda">
+                <ScalarProperty Name="OdaNumarasi" ColumnName="OdaNumarasi" />
+                <ScalarProperty Name="Adi" ColumnName="Adi" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="KalinanOdaVw">
+            <EntityTypeMapping TypeName="StajerDbModel.KalinanOdaVw">
+              <MappingFragment StoreEntitySet="KalinanOdaVw">
+                <ScalarProperty Name="Adi" ColumnName="Adi" />
+                <ScalarProperty Name="OdaNumarasi" ColumnName="OdaNumarasi" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="viewolustur">
+            <EntityTypeMapping TypeName="StajerDbModel.viewolustur">
+              <MappingFragment StoreEntitySet="viewolustur">
+                <ScalarProperty Name="OdaNumarasi" ColumnName="OdaNumarasi" />
+                <ScalarProperty Name="BinaNumarasi" ColumnName="BinaNumarasi" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
